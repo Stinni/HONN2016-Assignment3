@@ -1,0 +1,21 @@
+{
+  "name": "punchcardapi",
+  "version": "2.0.0",
+  "description": "Project A08 in week 9-10",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kristinnf13",
+  "license": "MIT",
+  "repository": "https://github.com/Stinni/VEFT-A08",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.4",
+    "node-uuid": "^1.4.7",
+    "nodemon": "^1.11.0"
+  },
+  "devDependencies": {}
+}
