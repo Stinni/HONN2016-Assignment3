@@ -9,8 +9,8 @@ const punches = require("./punchesapi");
 
 const api = express();
 
-api.use("/api/users", users);
-api.use("/api/companies", companies);
-api.use("/api/my/punches", punches);
+api.use("/api/v1/users", users);
+api.use("/api/v1/companies", companies);
+api.use("/api/v1/my/punches", punches);
 
 module.exports = api;
