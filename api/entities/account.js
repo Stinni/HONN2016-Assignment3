@@ -23,6 +23,4 @@ const UserSchema = new mongoose.Schema({
 
 const UserEntity = mongoose.model("User", UserSchema);
 
-module.exports = {
-	Users: UserEntity
-};
+module.exports = UserEntity;
