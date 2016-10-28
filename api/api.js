@@ -3,9 +3,9 @@
 // Email: kristinnf13@ru.is
 
 const express = require("express");
-const users = require("./usersapi");
-const companies = require("./companiesapi");
-const punches = require("./punchesapi");
+const users = require("./v1/usersapi");
+const companies = require("./v1/companiesapi");
+const punches = require("./v1/punchesapi");
 
 const api = express();
 
