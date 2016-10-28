@@ -2,7 +2,7 @@
 // Students: Kristinn Heiðar Freysteinsson & Snorri
 // Email: kristinnf13@ru.is; snorri...
 
-const UserEntity = require("./account");
+const UserEntity = require("./user");
 const VideoEntity = require("./video");
 
 module.exports = {
