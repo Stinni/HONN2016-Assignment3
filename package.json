@@ -1,14 +1,14 @@
 {
-  "name": "punchcardapi",
-  "version": "2.0.0",
-  "description": "Project A08 in week 9-10",
+  "name": "RuTube API",
+  "version": "1.0.0",
+  "description": "Assignment 3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "kristinnf13",
+  "author": "kristinnf13, snorri13",
   "license": "MIT",
-  "repository": "https://github.com/Stinni/VEFT-A08",
+  "repository": "https://github.com/Stinni/HONN2016-Assignment3",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
