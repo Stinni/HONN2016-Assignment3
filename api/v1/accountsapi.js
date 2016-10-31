@@ -24,8 +24,7 @@ app.get("/", (req, res) => {
 		docs.forEach((p) => {
 			tmp.push({
 				_id: p._id,
-				name: p.name,
-				gender: p.gender
+				name: p.name
 			});
 		});
 		res.json(tmp);
