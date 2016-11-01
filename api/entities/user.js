@@ -1,22 +1,27 @@
+// HONN2016 - Assignment 3
+// Students: Kristinn Heiðar Freysteinsson & Snorri Hjörvar Jóhannsson
+// Email: kristinnf13@ru.is; snorri13@ru.is
+
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-	name: {
+	userid: {
+		type: String,
+		required: true
+	},
+	username: {
 		type: String,
 		required: true,
 		validate: function(n) {
 			return n !== null && n.length;
 		}
 	},
-	password: {
-		type: String,
-        required: true
-	},
-	token: {
-		type: String,
-		required: true,
-		unique: true
-	}
+	favoriteVideos: [{
+		type: String
+	}],
+	closeFriends: [{
+		type: String
+	}]
 },{
 	versionKey: false
 });

@@ -64,13 +64,20 @@ app.post("/", (req, res) => {
 			//return res.status(500).send("Something went wrong with adding the account to the database");
 		}
 
-		entities.Authentications.create({"userid": accdoc._id, "token": uuid.v1()}, (autherr, authdoc) => {
-			if(autherr) {
-				console.log(autherr); // Here a logger should be added
-				return res.status(500).send("The account was created but something went wrong with logging in user " +
-					"with id: " + accdoc._id);
+		entities.Users.create({"userid": accdoc._id, "username": accdoc._id}, (uerr, udoc) => {
+			if(uerr) {
+				console.log(uerr); // Here a logger should be added
+				return res.status(500).send("Something went wrong with creating the user part of the account.");
 			}
-			return res.status(201).json({userid: accdoc._id, token: authdoc.token});
+
+			entities.Authentications.create({"userid": accdoc._id, "token": uuid.v1()}, (autherr, authdoc) => {
+				if(autherr) {
+					console.log(autherr); // Here a logger should be added
+					return res.status(500).send("The account was created but something went wrong with logging in user " +
+						"with id: " + accdoc._id);
+				}
+				return res.status(201).json({userid: accdoc._id, token: authdoc.token});
+			});
 		});
 	});
 });
@@ -182,22 +189,29 @@ app.delete("/:id", (req, res) => {
 			return res.status(401).send("You're not authorized to delete this account!");
 		}
 
-		var promise = entities.Authentications.remove({"userid": id}, (err) => {
+		entities.Authentications.remove({"userid": id}, (err) => {
 			if(err) {
 				console.log(err); // Here a logger should be added
 				return res.status(500).send("Something went wrong with removing a authentication record from the database.");
 			} else {
 				console.log("Authentication record removed from the database.");
 			}
-		});
-
-		promise.then(() => {
+		}).then(() => {
 			entities.Accounts.remove({"_id": new ObjectId(id)}, (err) => {
 				if(err) {
 					console.log(err); // Here a logger should be added
 					return res.status(500).send("Something went wrong with removing an account from the database.");
 				} else {
 					console.log("Account removed from the database.");
+				}
+			});
+		}).then(() => {
+			entities.Users.remove({"userid": id}, (err) => {
+				if(err) {
+					console.log(err); // Here a logger should be added
+					return res.status(500).send("Something went wrong with removing a user from the database.");
+				} else {
+					console.log("User removed from the database.");
 					return res.status(200).send("Your account has been removed from the database.");
 				}
 			});

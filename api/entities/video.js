@@ -1,3 +1,7 @@
+// HONN2016 - Assignment 3
+// Students: Kristinn Heiðar Freysteinsson & Snorri Hjörvar Jóhannsson
+// Email: kristinnf13@ru.is; snorri13@ru.is
+
 const mongoose = require("mongoose");
 
 const VideoSchema = new mongoose.Schema({
