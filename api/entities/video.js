@@ -9,11 +9,13 @@ const VideoSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	punchCount: {
-		type: Number,
-		min: 2,
-		default: 10
-	}
+	description: {
+		type: String,
+		required: true
+	},
+	channels: [{
+		type: String
+	}]
 },{
 	versionKey: false
 });

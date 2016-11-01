@@ -11,6 +11,6 @@ const api = express();
 
 api.use("/api/v1/accounts", accounts);
 api.use("/api/v1/users", users);
-api.use("/api/v1/companies", videos);
+api.use("/api/v1/videos", videos);
 
 module.exports = api;
