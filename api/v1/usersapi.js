@@ -115,7 +115,50 @@ app.post("/friends", (req, res) => {
 					if(serr) {
 						return res.status(500).send("Something went wrong when saving to the database.");
 					}
-					return res.status(200).send("A friend has been added to you close friend's list.");
+					return res.status(200).send("A friend has been added to your close friend's list.");
+				});
+			});
+		});
+	});
+});
+
+/*
+POST /api/v1/users/videos
+Allows an authenticated user to add a friend to his close friends list. The user must provide the userid.
+*/
+app.post("/videos", (req, res) => {
+	if(!req.headers.hasOwnProperty("authorization")) {
+		return res.status(401).send("Authorization header missing!");
+	}
+
+	if(!req.body.hasOwnProperty("videoid")) {
+		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'videoid' field!");
+	}
+	var videoid = req.body.videoid;
+
+	auth(req.headers.authorization, (userid) => {
+		if(!userid) {
+			return res.status(401).send("Not authorized!");
+		}
+
+		entities.Videos.findOne({"_id": new ObjectId(videoid)}, (err, doc) => {
+			if(err) {
+				return res.status(500).send("Something went wrong with fetching from the database");
+			}
+			if(doc === null) {
+				return res.status(404).send("No video found with id: " + videoid);
+			}
+
+			entities.Users.findOne({"userid": userid}, (ferr, fdoc) => {
+				if(ferr) {
+					return res.status(500).send("Something went wrong with fetching from the database");
+				}
+				fdoc.favoriteVideos.push(videoid);
+				fdoc.save((serr) => {
+					if(serr) {
+						return res.status(500).send("Something went wrong when saving to the database.");
+					}
+					return res.status(200).send("A video has been added to your favorite videos.");
 				});
 			});
 		});

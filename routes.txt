@@ -8,3 +8,6 @@ DELETE - http://localhost:4000/api/v1/accounts/:id   - deletes an account
 GET    - http://localhost:4000/api/v1/users/         - details about one logged in/authenticated user
 PUT    - http://localhost:4000/api/v1/users/         - updates the username and email of the authenticated user
 POST   - http://localhost:4000/api/v1/users/friends  - adds a friend to an authenticated user's close friends list
+POST   - http://localhost:4000/api/v1/users/videos   - adds a video to an authenticated user's favorite videos list
+
+
