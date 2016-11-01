@@ -18,11 +18,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	email: {
 		type: String,
-		lowercase: true,
-		unique: true,
-		validate: function(email) {
-			return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)
-		}
+		lowercase: true
 	},
 	favoriteVideos: [{
 		type: String

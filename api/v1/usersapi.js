@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 
 /*
 PUT /api/v1/users
-Updates the username of an authenticated user.
+Updates the username and email of an authenticated user.
 */
 app.put("/", (req, res) => {
 	if(!req.headers.hasOwnProperty("authorization")) {
@@ -51,6 +51,11 @@ app.put("/", (req, res) => {
 		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'username' field!");
 	}
 	var username = req.body.username;
+
+	if(!req.body.hasOwnProperty("email")) {
+		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'email' field!");
+	}
+	var email = req.body.email;
 
 	auth(req.headers.authorization, (userid) => {
 		if(!userid) {
@@ -63,6 +68,7 @@ app.put("/", (req, res) => {
 			}
 
 			doc.set("username", username);
+			doc.set("email", email);
 			doc.save((serr) => {
 				if(serr) {
 					return res.status(500).send("Something went wrong when saving to the database.");
@@ -100,7 +106,18 @@ app.post("/friends", (req, res) => {
 				return res.status(404).send("No user found with id: " + friend_id);
 			}
 
-			entities.Users.findOneAndUpdate({"userid": userid}, {$push: {closeFriends: friend_id}});
+			entities.Users.findOne({"userid": userid}, (ferr, fdoc) => {
+				if(ferr) {
+					return res.status(500).send("Something went wrong with fetching from the database");
+				}
+				fdoc.closeFriends.push(friend_id);
+				fdoc.save((serr) => {
+					if(serr) {
+						return res.status(500).send("Something went wrong when saving to the database.");
+					}
+					return res.status(200).send("A friend has been added to you close friend's list.");
+				});
+			});
 		});
 	});
 });
