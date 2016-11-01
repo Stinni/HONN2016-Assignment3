@@ -4,7 +4,7 @@
 
 const mongoose = require("mongoose");
 const api = require("./api/api");
-const db = "localhost/app";
+const db = "localhost/honndb";
 const port = 4000;
 
 mongoose.connect(db);
