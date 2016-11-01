@@ -119,7 +119,10 @@ app.put("/:id", (req, res) => {
 				return res.status(401).send("Incorrect password!");
 			}
 			doc.set("password", newpassword);
-			doc.save().then((sdoc) => {
+			doc.save((serr) => {
+				if(serr) {
+					return res.status(500).send("Something went wrong when saving to the database.");
+				}
 				return res.status(200).send("Password has been updated.");
 			});
 		});
@@ -167,14 +170,22 @@ app.post("/login", (req, res) => {
 				});
 			} else {
 				authdoc.set("createdAt", Date.now());
-				authdoc.save().then((sdoc) => {
-					return res.status(200).json({userid: sdoc.userid, token: sdoc.token});
+				authdoc.save((serr) => {
+					if(serr) {
+						return res.status(500).send("Something went wrong when saving to the database.");
+					}
+					return res.status(200).json({userid: authdoc.userid, token: authdoc.token});
 				});
 			}
 		});
 	});
 });
 
+/*
+DELETE /api/v1/accounts/
+Deletes the logged in account. It has to be authenticated and the same userid has to be provided
+as a parameter.
+*/
 app.delete("/:id", (req, res) => {
 	if(!req.headers.hasOwnProperty("authorization")) {
 		return res.status(401).send("Authorization header missing!");
