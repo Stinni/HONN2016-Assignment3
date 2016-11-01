@@ -9,19 +9,13 @@ const AccountSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		unique: true,
-		minlength: 4,
-		validate: function(n) {
-			return n !== null && n.length;
-		}
+		minlength: 4
 	},
 	password: {
 		type: String,
 		required: true,
 		minlength: 8,
-		maxlength: 32,
-		validate: function(n) {
-			return n !== null && n.length;
-		}
+		maxlength: 32
 	}
 },{
 	versionKey: false
