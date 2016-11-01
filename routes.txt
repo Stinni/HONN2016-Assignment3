@@ -1,0 +1,10 @@
+
+GET    - http://localhost:4000/api/v1/accounts/      - list of all accounts (NO PASSWORDS!)
+POST   - http://localhost:4000/api/v1/accounts/      - adds/creates a new account
+PUT    - http://localhost:4000/api/v1/accounts/:id   - updates an account password
+POST   - http://localhost:4000/api/v1/accounts/login - logs an existing user in
+DELETE - http://localhost:4000/api/v1/accounts/:id   - deletes an account
+
+GET    - http://localhost:4000/api/v1/users/         - details about one logged in/authenticated user
+PUT    - http://localhost:4000/api/v1/users/         - updates the username and email of the authenticated user
+POST   - http://localhost:4000/api/v1/users/friends  - adds a friend to an authenticated user's close friends list
