@@ -10,4 +10,6 @@ PUT    - http://localhost:4000/api/v1/users/         - updates the username and 
 POST   - http://localhost:4000/api/v1/users/friends  - adds a friend to an authenticated user's close friends list
 POST   - http://localhost:4000/api/v1/users/videos   - adds a video to an authenticated user's favorite videos list
 
-
+GET    - http://localhost:4000/api/v1/videos/        - list of all videos
+GET    - http://localhost:4000/api/v1/videos/:cId    - list of all videos in channel with id as cId
+POST   - http://localhost:4000/api/v1/videos/        - adds a video to the database
