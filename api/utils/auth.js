@@ -4,17 +4,18 @@
 
 const entities = require("./../entities/entities");
 
-var authenticate = function authenticate(token) {
+module.exports = function authenticate(token, cb) {
 	entities.Authentications.findOne({"token": token}, (err, doc) => {
 		if(err) {
 			console.log(err); // Here a logger should be added
-			return null;
+			cb(null);
 		}
-		if(doc === null) {
-			return null;
+		else if(doc === null) {
+			console.log("doc returned is null");
+			cb(null);
 		}
-		return doc.userid;
+		else {
+			cb(doc.userid);
+		}
 	});
 }
-
-module.exports = authenticate;

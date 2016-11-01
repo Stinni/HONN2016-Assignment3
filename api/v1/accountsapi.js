@@ -3,7 +3,9 @@
 // Email: kristinnf13@ru.is; snorri13@ru.is
 
 const express = require("express");
+const ObjectId = require('mongoose').Types.ObjectId;
 const entities = require("./../entities/entities");
+const auth = require("./../utils/auth");
 const bodyParser = require("body-parser");
 const uuid = require("node-uuid");
 const app = express();
@@ -73,6 +75,55 @@ app.post("/", (req, res) => {
 	});
 });
 
+/*
+PUT /api/v1/accounts/:id
+Updates the account password. The client has to be logged in/authenticated. And both the old and new passwords have to
+be included. The old one has to mach the current one.
+*/
+app.put("/:id", (req, res) => {
+	if(!req.headers.hasOwnProperty("authorization")) {
+		return res.status(401).send("Authorization header missing!");
+	}
+	var id = req.params.id;
+
+	if(!req.body.hasOwnProperty("oldpassword")) {
+		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'oldpassword' field!");
+	}
+	var oldpassword = req.body.oldpassword;
+
+	if(!req.body.hasOwnProperty("newpassword")) {
+		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'newpassword' field!");
+	}
+	var newpassword = req.body.newpassword;
+
+	entities.Accounts.findOne({"_id": new ObjectId(id)}, (err, doc) => {
+		if(err) {
+			return res.status(500).send("An error occurred while fetching an account from the database.");
+		}
+		if(doc === null) {
+			return res.status(404).send("No account found with id: " + id);
+		}
+
+		auth(req.headers.authorization, (userid) => {
+			if(!userid) {
+				return res.status(401).send("Not authorized!");
+			}
+			if(oldpassword !== doc.password) {
+				return res.status(401).send("Incorrect password!");
+			}
+			doc.set("password", newpassword);
+			doc.save().then((sdoc) => {
+				return res.status(200).send("Password has been updated.");
+			});
+		});
+	});
+});
+
+/*
+POST /api/v1/accounts/login
+Allows for account login. The client must provide the name and password. The
+response contains the authorization token of the newly created user. A token can also be got with logging in.
+*/
 app.post("/login", (req, res) => {
 	if(!req.body.hasOwnProperty("name")) {
 		return res.status(412).send("Post syntax is incorrect. Message body has to include a 'name' field!");
@@ -113,6 +164,43 @@ app.post("/login", (req, res) => {
 					return res.status(200).json({userid: sdoc.userid, token: sdoc.token});
 				});
 			}
+		});
+	});
+});
+
+app.delete("/:id", (req, res) => {
+	if(!req.headers.hasOwnProperty("authorization")) {
+		return res.status(401).send("Authorization header missing!");
+	}
+	var id = req.params.id;
+
+	auth(req.headers.authorization, (userid) => {
+		if(!userid) {
+			return res.status(401).send("Not authorized!");
+		}
+		if(id !== userid) {
+			return res.status(401).send("You're not authorized to delete this account!");
+		}
+
+		var promise = entities.Authentications.remove({"userid": id}, (err) => {
+			if(err) {
+				console.log(err); // Here a logger should be added
+				return res.status(500).send("Something went wrong with removing a authentication record from the database.");
+			} else {
+				console.log("Authentication record removed from the database.");
+			}
+		});
+
+		promise.then(() => {
+			entities.Accounts.remove({"_id": new ObjectId(id)}, (err) => {
+				if(err) {
+					console.log(err); // Here a logger should be added
+					return res.status(500).send("Something went wrong with removing an account from the database.");
+				} else {
+					console.log("Account removed from the database.");
+					return res.status(200).send("Your account has been removed from the database.");
+				}
+			});
 		});
 	});
 });

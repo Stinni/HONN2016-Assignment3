@@ -23,7 +23,7 @@ const AuthenticationSchema = new mongoose.Schema({
 	versionKey: false
 });
 
-AuthenticationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 });
+AuthenticationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 216000 });
 
 const AuthenticationEntity = mongoose.model("Authentication", AuthenticationSchema);
 
