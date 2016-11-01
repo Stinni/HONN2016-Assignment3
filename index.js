@@ -7,6 +7,7 @@ const api = require("./api/api");
 const db = "localhost/honndb";
 const port = 4000;
 
+mongoose.Promise = global.Promise;
 mongoose.connect(db);
 mongoose.connection.once("open", () => {
 	console.log("\x1b[36m" + "Connected to database: " + db + "\x1b[0m");

@@ -11,8 +11,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const adminToken = "zeAdminRules";
-
 /*
 GET /api/companies - 10%
 Fetches a list of companies that have been added to MongoDB. This endpoint should not use any
